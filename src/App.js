@@ -1,6 +1,6 @@
 import "./App.css";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const App = () => {
   const [input, setInput] = useState("");
@@ -11,15 +11,13 @@ const App = () => {
     "::smiley::": "😁",
   };
 
+  useEffect(() => {
+    let arr = input.split(" ");
+    setInput(arr.map((el) => (map[el] ? map[el] : el)).join(" "));
+  }, [input]);
+
   const handleChange = (e) => {
-    let { value } = e.target;
-
-    var replace = new RegExp(Object.keys(map).join("|"), "gi");
-    value = value.replace(replace, function (found) {
-      return map[found];
-    });
-
-    setInput(value);
+    setInput(e.target.value);
   };
 
   return (
@@ -29,7 +27,7 @@ const App = () => {
         type="text"
         onChange={handleChange}
         value={input}
-        style={{ padding: "10px", width: "80%^" }}
+        style={{ padding: "10px", width: "80%" }}
         placeholder="Type your text here to convert it into an emoji"
       />
     </div>
